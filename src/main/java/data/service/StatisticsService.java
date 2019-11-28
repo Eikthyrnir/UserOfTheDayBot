@@ -19,7 +19,7 @@ public class StatisticsService implements AutoCloseable{
     ConnectionPool connectionPool = ConnectionPool.getInstance();
     //default ctor
 
-    public Player getLastWinner(Chat chat, String game) {
+    public Player fetchLastWinner(Chat chat, String game) {
         String query =
                 "select p.id, p.telegram_id, p.chat_id, p.name " +
                         "    from  " +
@@ -72,7 +72,7 @@ public class StatisticsService implements AutoCloseable{
         }
     }
 
-    public LocalDate getLastGameDate(Chat chat, String game) {
+    public LocalDate fetchLastGameDate(Chat chat, String game) {
         String query =
                         "select s.date " +
                         "    from  " +

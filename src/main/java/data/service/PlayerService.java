@@ -21,7 +21,7 @@ public class PlayerService implements AutoCloseable {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     //default ctor
 
-    public List<Player> getPlayersFromChat(Chat chat) {
+    public List<Player> fetchPlayersFromChat(Chat chat) {
         String query =
                 "SELECT id, telegram_id, chat_id, name FROM players " +
                 "WHERE chat_id = " + chat.getId() +
@@ -71,7 +71,7 @@ public class PlayerService implements AutoCloseable {
 
     }
 
-    public Player retrieveRandPlayer(Chat chat) {
+    public Player fetchRandPlayer(Chat chat) {
         //select 1 rand player from
         String query =
                 "SELECT p.name " +
