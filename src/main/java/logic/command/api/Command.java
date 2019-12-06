@@ -1,4 +1,4 @@
-package logic.command;
+package logic.command.api;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -15,6 +15,8 @@ public interface Command {
         //do nothing
     }
 
-    default void setArgument(String arg) {}
+    default void setArgument(String arg) {
+    	//do nothing
+    }
 
 }

@@ -1,5 +1,7 @@
-package logic.command;
+package logic.command.api;
 
+import logic.command.impl.HandsomeFinderCommand;
+import logic.command.impl.RegistrationCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -11,7 +13,7 @@ import java.util.Map;
 
 public class CommandFactory {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommandFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(CommandFactory.class);
 
 
     //an empty string cannot indicate any command
@@ -33,6 +35,11 @@ public class CommandFactory {
         this.bot = bot;
     }
 
+    /**
+     * trying to find a command by message text
+     * @param message - message with command
+     * @return appropriate command or empty Command, that do nothing
+     */
     public Command createCommand(Message message) {
         try {
             CommandInfo commandInfo = parse(message.getText());
@@ -45,7 +52,7 @@ public class CommandFactory {
             return command;
 
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
 
             return new DoNothingCommand();
         }

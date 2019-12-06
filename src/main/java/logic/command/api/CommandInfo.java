@@ -1,4 +1,4 @@
-package logic.command;
+package logic.command.api;
 
 /**
  *  class for CommandFactory

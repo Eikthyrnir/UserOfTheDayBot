@@ -15,8 +15,8 @@ import java.time.LocalDate;
 
 public class StatisticsService implements AutoCloseable{
 
-    Logger logger = LoggerFactory.getLogger(StatisticsService.class);
-    ConnectionPool connectionPool = ConnectionPool.getInstance();
+    private static final Logger log = LoggerFactory.getLogger(StatisticsService.class);
+    private ConnectionPool connectionPool = ConnectionPool.getInstance();
     //default ctor
 
     public Player fetchLastWinner(Chat chat, String game) {
@@ -49,7 +49,7 @@ public class StatisticsService implements AutoCloseable{
                         );
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new DataAccessException("");
         }
         return null;
@@ -67,7 +67,7 @@ public class StatisticsService implements AutoCloseable{
         ) {
             st.executeUpdate(query);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new DataAccessException("");
         }
     }
@@ -98,7 +98,7 @@ public class StatisticsService implements AutoCloseable{
                         .toLocalDate();
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new DataAccessException("");
         }
         return null;
@@ -110,7 +110,7 @@ public class StatisticsService implements AutoCloseable{
         try {
             connectionPool.close();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new DataAccessException("");
         }
     }

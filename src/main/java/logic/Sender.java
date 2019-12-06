@@ -9,7 +9,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class Sender {
 
-    private Logger logger = LoggerFactory.getLogger(Sender.class);
+    private static final Logger log = LoggerFactory.getLogger(Sender.class);
+
     private TelegramLongPollingBot bot;
 
     public Sender(TelegramLongPollingBot bot) {
@@ -37,7 +38,7 @@ public class Sender {
         try {
             bot.execute(sendMessage);
         } catch (TelegramApiException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

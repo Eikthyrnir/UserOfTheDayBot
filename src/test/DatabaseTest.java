@@ -7,7 +7,7 @@ public class DatabaseTest {
     public static void main(String[] args) {
 
         try(PlayerService playerService = new PlayerService()){
-            for(Player p : playerService.getPlayersFromChat(new Chat(11))) {
+            for(Player p : playerService.fetchPlayersFromChat(new Chat(11))) {
                 System.out.println(p.getName());
             }
 

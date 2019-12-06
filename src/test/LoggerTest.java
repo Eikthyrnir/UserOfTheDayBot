@@ -9,8 +9,15 @@ public class LoggerTest {
     public static void main(String[] args) {
 
         String msg = "Hello, world!";
-        logger.debug(msg);
-        logger.info (msg);
+
+        for (int i = 0; i < 5; i++) {
+            new Thread(()-> {
+                new Thread(()-> {
+                    logger.debug(msg);
+                }).start();
+                logger.info(msg);
+            }).start();
+        }
         logger.error(msg);
         logger.warn (msg);
     }

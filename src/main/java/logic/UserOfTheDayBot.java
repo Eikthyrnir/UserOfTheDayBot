@@ -1,6 +1,6 @@
 package logic;
 
-import logic.command.CommandFactory;
+import logic.command.api.CommandFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UserOfTheDayBot extends TelegramLongPollingBot {
 
-    private Logger logger = LoggerFactory.getLogger(UserOfTheDayBot.class);
+    private static final Logger log = LoggerFactory.getLogger(UserOfTheDayBot.class);
 
     private final String name;
     private final String token;
@@ -28,12 +28,15 @@ public class UserOfTheDayBot extends TelegramLongPollingBot {
      */
     @Override
     public void onUpdateReceived(Update update) {
+        log.debug("chat: " + update.getMessage().getChatId()+ ", msg: " + update.getMessage().getText());
         try {
-            factory.createCommand(update.getMessage())
-                    .execute();
+            new Thread(()-> {
+                factory.createCommand(update.getMessage())
+                        .execute();
+            }).start();
         } catch (Exception e) {
             //TODO
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

@@ -1,9 +1,10 @@
-package logic.command;
+package logic.command.impl;
 
 import data.service.ChatService;
 import data.service.PlayerService;
 import logic.Sender;
 
+import logic.command.api.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class RegistrationCommand implements Command {
 
-    private Logger logger = LoggerFactory.getLogger(RegistrationCommand.class);
+    private static final Logger log = LoggerFactory.getLogger(RegistrationCommand.class);
 
     private TelegramLongPollingBot bot;
     private Message message;
@@ -31,7 +32,7 @@ public class RegistrationCommand implements Command {
             playerService.addPlayer(id, chatId, name);
             sender.send(name + ", ты в игре!", chatService.getChat(chatId));
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

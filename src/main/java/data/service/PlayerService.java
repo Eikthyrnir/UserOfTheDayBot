@@ -7,7 +7,6 @@ import data.entity.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class PlayerService implements AutoCloseable {
 
-    private Logger logger = LoggerFactory.getLogger(PlayerService.class);
+    private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     //default ctor
 
@@ -42,7 +41,7 @@ public class PlayerService implements AutoCloseable {
 
             return players;
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new DataAccessException("");
         }
     }
@@ -60,9 +59,11 @@ public class PlayerService implements AutoCloseable {
         try (Statement st =
                      connectionPool.getConnection().createStatement()
         ) {
+            log.debug("query = " + query);
+
             st.executeUpdate(query);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new DataAccessException("");
         }
     }
@@ -74,13 +75,28 @@ public class PlayerService implements AutoCloseable {
     public Player fetchRandPlayer(Chat chat) {
         //select 1 rand player from
         String query =
-                "SELECT p.name " +
+                "SELECT p.id, p.telegram_id, p.chat_id, p.name " +
                         "FROM players AS p" +
                         "WHERE p.chatId = " + chat.getId() +
                         "  AND p.status = 1" +
                         "ORDER BY RAND()" +
                         "LIMIT 1";
-
+        try (Statement st =
+                     connectionPool.getConnection().createStatement()
+        ) {
+            ResultSet rs = st.executeQuery(query);
+            if(rs.next()) {
+                return new Player(
+                        rs.getLong("id"),
+                        rs.getLong("telegram_id"),
+                        rs.getLong("chat_id"),
+                        rs.getString("name")
+                        );
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            throw new DataAccessException("");
+        }
         return null;
     }
 
@@ -90,7 +106,7 @@ public class PlayerService implements AutoCloseable {
         try {
             connectionPool.close();
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new DataAccessException("");
         }
     }

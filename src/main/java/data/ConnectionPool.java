@@ -10,7 +10,7 @@ public enum ConnectionPool {
 
     INSTANCE;
 
-    private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
+    private static final Logger log = LoggerFactory.getLogger(ConnectionPool.class);
 
     private static final String url = "jdbc:mysql://localhost:3306/userofthedaybot";
     private static final String login = "root";
@@ -24,7 +24,7 @@ public enum ConnectionPool {
         try {
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
         } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
