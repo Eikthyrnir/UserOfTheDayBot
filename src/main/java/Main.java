@@ -24,7 +24,7 @@ public class Main {
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiRequestException e) {
             log.error("some unpredictable problems has occurred during bot registration: "
-                    + e.getMessage());
+                    + e.getMessage(), e);
         }
     }
 
