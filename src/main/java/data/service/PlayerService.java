@@ -1,7 +1,6 @@
 package data.service;
 
 import data.DataAccessException;
-import data.ConnectionPool;
 import data.entity.Chat;
 import data.entity.Player;
 import org.slf4j.Logger;
