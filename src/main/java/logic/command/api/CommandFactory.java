@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +40,6 @@ public class CommandFactory {
      * @return appropriate command or empty Command, that do nothing
      */
     public Command createCommand(Message message) {
-        try {
             CommandInfo commandInfo = parse(message.getText());
 
             Command command = selectCommand(commandInfo.name);
@@ -50,12 +48,6 @@ public class CommandFactory {
             command.setArgument(commandInfo.argument);
 
             return command;
-
-        } catch (Exception e) {
-            log.error(e.getMessage());
-
-            return new DoNothingCommand();
-        }
     }
 
 
@@ -81,9 +73,8 @@ public class CommandFactory {
         return new CommandInfo(commandName.substring(1), arg);
     }
 
-    //TODO rewrite throws
-    private Command selectCommand(String commandName)
-                throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+    private Command selectCommand(String commandName) {
         Class<?> commandClass = commandTexts.get(commandName);
 
         if (commandClass == null) {
@@ -91,8 +82,14 @@ public class CommandFactory {
             return new DoNothingCommand();
         }
 
-        return (Command) commandClass
-                .getConstructor()
-                .newInstance();
+        try {
+            return (Command) commandClass
+                    .getConstructor()
+                    .newInstance();
+        } catch (Exception e) {
+            log.error("failed (unable) to instantiate this command: " + e.getMessage(), e);
+
+            return new DoNothingCommand();
+        }
     }
 }
