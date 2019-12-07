@@ -1,5 +1,7 @@
 package data.entity;
 
+import java.util.Objects;
+
 public class Player {
 
     private long id;
@@ -31,4 +33,19 @@ public class Player {
         return name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player)) return false;
+        Player player = (Player) o;
+        return getId() == player.getId() &&
+                getTelegramId() == player.getTelegramId() &&
+                getChatId() == player.getChatId() &&
+                getName().equals(player.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getTelegramId(), getChatId(), getName());
+    }
 }
