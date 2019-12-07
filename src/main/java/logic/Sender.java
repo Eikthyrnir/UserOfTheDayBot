@@ -18,9 +18,7 @@ public class Sender {
     }
 
     public void send(String message, Chat chat) {
-        new Thread(
-            () -> sendMsg(message, chat)
-        ).start();
+        sendMsg(message, chat);
     }
 
 
@@ -38,7 +36,7 @@ public class Sender {
         try {
             bot.execute(sendMessage);
         } catch (TelegramApiException e) {
-            log.error(e.getMessage(), e);
+            log.error("message sending failed: " + e.getMessage(), e);
         }
     }
 }
