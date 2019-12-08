@@ -15,8 +15,10 @@ import java.time.LocalDate;
 public class StatisticsService implements AutoCloseable{
 
     private static final Logger log = LoggerFactory.getLogger(StatisticsService.class);
+
+
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
-    //default ctor
+
 
     public Player fetchLastWinner(Chat chat, String game) {
         String query =
